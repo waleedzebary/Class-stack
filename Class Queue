@@ -1,0 +1,70 @@
+class Queue:
+    def __init__(self, size):
+        self.queue = []
+        self.size = size
+
+    def enqueue(self, item):
+        if len(self.queue) == self.size:
+            print('Queue is full')
+        else:
+            self.queue.insert(0, item)
+            print('Queue size is: ', len(self.queue))
+
+    def dequeue(self):
+        if self.queue == []:
+            print("Queue is empty!")
+            data = -1
+        else:
+            data = self.queue.pop()
+        return data
+
+    def display(self):
+        if self.queue == []:
+            print('the stack is empty!!!')
+        else:
+            for item in self.queue:
+                print('the item is: ', item)
+
+
+queue_size = int(input('enter the Queue size: '))
+queue = Queue(queue_size)
+Exit = False
+while Exit is False:
+    print('1) push ')
+    print('2) pop ')
+    print('3) display ')
+    operation = input('select an operation: ')
+
+    def push_op():
+        number = input('enter a number: ')
+        if number.isdigit():
+            global queue
+            queue.enqueue(number)
+        else:
+            print('invalid input......')
+
+
+    def pop_op():
+        global queue
+        number = queue.dequeue()
+        if number is not None:
+            print(f"Delete data: {number}")
+
+
+    def display_op():
+        global queue
+        queue.display()
+
+
+    def exit_op():
+        global Exit
+        Exit = True
+        print('Exiting......')
+
+    switch = {
+        '1': push_op,
+        '2': pop_op,
+        '3': display_op
+    }
+
+    switch.get(operation, exit_op)()
