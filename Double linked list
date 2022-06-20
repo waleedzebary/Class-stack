@@ -1,0 +1,198 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.prev = None
+
+
+class Doubly:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def insert_element_start(self, data):
+        if self.head is None:
+            new_node = Node(data)
+            self.head = new_node
+        else:
+            print("The list is empty")
+
+    def insert_to_end(self, data):
+        if self.head is None:
+            new_node = Node(data)
+            self.head = new_node
+            return
+        new = self.head
+        # Iterate till the next reaches NULL
+        while new.next is not None:
+            new = new.next
+        new_node = Node(data)
+        new.next = new_node
+        new_node.prev = new
+
+    def insert_specific(self, data, key):
+        new_node = Node(data)
+        current = self.head
+        if self.head is None:
+            print('the linked list is empty : do you want to insert in at first : (y/n)')
+            create = input()
+            if create == 'y':
+                self.head = new_node
+            else:
+                print('the linked list is empty')
+        else:
+            while current.next:
+                if current.data == key:
+                    break
+                current = current.next
+            if current.next:
+                new_node.next = current.next
+                new_node.previous = current
+                current.next = new_node
+            else:
+                if current.data == key:
+                    current.next = new_node
+                    new_node.previous = current
+                else:
+                    print('the key you insert in not in linked list ')
+                    create = input('do you want to insert it after last node (y/n) : ')
+                    if create == 'y':
+                        self.insert_to_end(data)  # insert the new node at the end of linked list
+                    else:
+                        print("ok i didn't insert it")
+
+    def delete_at_start(self):
+        if self.head is not None:
+            temp = self.head
+            self.head = self.head.next
+            temp = None
+            if self.head is not None:
+                self.head.prev = None
+
+    def delete_at_end(self):
+        if self.head is None:
+            print("Can't delete elements, the list is empty")
+            return
+        if self.head.next is None:
+            self.head = None
+            return
+        new = self.head
+        while new.next is not None:
+            new = new.next
+        new.prev.next = None
+
+    def delete_specific(self, key):
+        current = self.head
+        if self.head is not None:
+            if self.head.data is key:
+                self.delete_at_start()  # use the delete first node function
+            else:
+                while current.next is not None:
+                    if current.data is key:
+                        break
+                    current = current.next
+                if current.next:
+                    current.prev.next = current.next
+                    current.next= current.next.prev
+                    current = None
+                else:
+                    if current.data is key:
+                        self.delete_at_end()  # use the delete last node function
+                    else:
+                        print('the key you enter is not in the linked list')
+        else:
+            print('you are deleting from empty linked list')
+
+    def delete_specific_next(self, key):
+        current = self.head
+        if self.head is not None:
+            if self.head.data is key:
+                if self.head is not None:
+                    temp = self.head
+                    self.head = self.head.next.next
+                    temp = None
+                    if self.head is not None:
+                        self.head.prev = None
+            else:
+                while current.next is not None:
+                    if current.data is key:
+                        break
+                    current = current.next
+                if current.next:
+                    current.prev.next = current.next.next
+                    current.next.prev = current.next.prev
+                    current = None
+                else:
+                    if current.data is key:
+                        self.delete_at_end()  # use the delete last node function
+                    else:
+                        print('the key you enter is not in the linked list')
+        else:
+            print('you are deleting from empty linked list')
+
+    def display(self):
+        if self.head is None:
+            print("The list is empty")
+            return
+        else:
+            temp = self.head
+            print("Element is: ", end=" ")
+            while temp is not None:
+                print(temp.data, end=" ")
+                temp = temp.next
+        print("\n")
+
+    def reverse_recursive(self):
+
+        def reverse_recursive(cur, prev):
+            if not cur:
+                return prev
+
+            nxt = cur.next
+            cur.next = prev
+            prev = cur
+            cur = nxt
+            return reverse_recursive(cur, prev)
+
+        self.head = reverse_recursive(cur=self.head, prev=None)
+
+    def reverse(self):
+        temp = None
+        current = self.head
+        while current is not None:
+            temp = current.previous
+            current.previous = current.next
+            current.next = temp
+            current = current.previous
+        if temp is not None:
+            self.head = temp.previous
+
+    def sorting_list(self):
+        if self.head is None:
+            print('list is empty')
+        else:
+            current = self.head
+            while current.next is not None:
+                index = current.next
+                while index is not None:
+                    if current.data > index.data:
+                        temp = current.data
+                        current.data = index.data
+                        index.data = temp
+                    index = index.next
+                current = current.next
+
+
+doubly = Doubly()
+number_of_elements = int(input("enter the size: "))
+number = int(input('Enter the number: '))
+doubly.insert_element_start(number)
+for nums in range(number_of_elements - 1):
+    element = int(input("Enter an element: "))
+    doubly.insert_to_end(element)
+
+doubly.reverse_recursive()
+doubly.delete_at_start()
+doubly.delete_at_end()
+doubly.delete_specific_next(1)
+doubly.display()
