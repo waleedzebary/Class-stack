@@ -58,3 +58,15 @@ class Graph(object):
 
     def __str__(self):
         return '{}({})'.format(self.__class__.__name__, dict(self._graph))
+ 
+
+connections = [('A', 'B'), ('B', 'C'), ('B', 'D'),
+                   ('C', 'D'), ('E', 'F'), ('F', 'C')]
+g = Graph(connections, directed=True)
+g = Graph(connections)  # undirected
+g.add('E', 'D')
+g.remove('A')
+pretty_print.pprint(g._graph)
+g.add('G', 'B')
+pretty_print.pprint(g._graph)
+g.find_path('G', 'E')
